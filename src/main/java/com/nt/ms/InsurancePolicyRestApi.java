@@ -47,7 +47,7 @@ public class InsurancePolicyRestApi {
 		}
 	}
 	
-	@GetMapping("/findPolicy/{planid}")
+	@GetMapping("/findPolicy/{policyId}")
 	public ResponseEntity<?> findPolicyById(@PathVariable Integer policyId) {
 		//user service
 		try {
@@ -59,7 +59,7 @@ public class InsurancePolicyRestApi {
 		}
 	}
 	
-	@DeleteMapping("/deletePolicy/{planid}")
+	@DeleteMapping("/deletePolicy/{policyId}")
 	public ResponseEntity<?> deletePolicyById(@PathVariable Integer policyId) {
 		//user service
 		try {
