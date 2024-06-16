@@ -12,6 +12,6 @@ public class InsurancePolicyConstantMessages {
     public static final String UPDATE_FAILURE = "update-failure";
     public static final String DELETE_SUCCESS = "delete-success";
     public static final String DELETE_FAILURE = "delete-failure";
-    public static final String STATUS_CHANGE_SUCCESS = "Insurance Policy status is changed";
-    public static final String STATUS_CHANGE_FAILURE = "Insurance Policy is not found for status change";
+    public static final String STATUS_CHANGE_SUCCESS = "status-change-success";
+    public static final String STATUS_CHANGE_FAILURE = "status-change-failure";
 }
