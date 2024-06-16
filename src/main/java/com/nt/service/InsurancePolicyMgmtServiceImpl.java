@@ -6,6 +6,7 @@ import java.util.Locale.Category;
 import java.util.Map;
 import java.util.Optional;
 
+import com.nt.config.AppConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,13 @@ public class InsurancePolicyMgmtServiceImpl implements IInsurancePolicyMgmtServi
 	@Autowired
 	public InsurancePolicyCategoryRepo insurancePolicyCategoryRepo;
 
+	private final Map<String, String> messages;
+
+	@Autowired
+	public InsurancePolicyMgmtServiceImpl(AppConfigProperties appConfigProperties) {
+		messages= appConfigProperties.getMessages();
+	}
+
 	@Override
 	public String registerInsurancePolicy(InsurancePolicy insurancePolicy) {
 		//save the Obj
@@ -33,7 +41,7 @@ public class InsurancePolicyMgmtServiceImpl implements IInsurancePolicyMgmtServi
 		else 
 			return "Problem in saving the InsurancePolicy";  */
 		
-		return saved.getPolicyNumber() != null?"Insurance Policy is saved: "+saved.getPolicyNumber():"Problem in saving the InsurancePolicy";
+		return saved.getPolicyNumber() != null?messages.get("save-success") +" "+ saved.getPolicyNumber():messages.get("save-failure");
 	}
 
 	@Override
@@ -50,7 +58,7 @@ public class InsurancePolicyMgmtServiceImpl implements IInsurancePolicyMgmtServi
 		   else
 			throw new IllegalArgumentException("Policy not found");  */
 		
-		return insurancePolicyRepo.findById(policyId).orElseThrow(() -> new IllegalArgumentException("Policy not found"));
+		return insurancePolicyRepo.findById(policyId).orElseThrow(() -> new IllegalArgumentException(messages.get("find-by-id-failure")));
 		
 	}
 
@@ -60,9 +68,9 @@ public class InsurancePolicyMgmtServiceImpl implements IInsurancePolicyMgmtServi
 		if (opt.isPresent()) {
 			//update the obj
 			insurancePolicyRepo.save(insurancePolicy);
-			return insurancePolicy.getPolicyNumber()+" Policy is updated";
+			return insurancePolicy.getPolicyNumber() +" "+ messages.get("update-success");
 		}else {
-			return "Policy ID: " + insurancePolicy.getPolicyNumber() + " is not found";
+			return "Policy ID: " + insurancePolicy.getPolicyNumber() +" "+ messages.get("update-failure");
 		}
 	}
 
@@ -72,9 +80,9 @@ public class InsurancePolicyMgmtServiceImpl implements IInsurancePolicyMgmtServi
 		if (opt.isPresent()) {
 			//update the obj
 			insurancePolicyRepo.deleteById(policyId);
-			return policyId +" Policy is deleted";
+			return policyId +" "+ messages.get("delete-success");
 		}else {
-			return "Policy ID: " + policyId + " is not found";
+			return "Policy ID: " + policyId +" "+ messages.get("delete-failure");
 		}
 	}
 

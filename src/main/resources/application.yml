@@ -1,0 +1,26 @@
+server:
+  port: 4041
+
+spring:
+  application:
+    name: JRTP-MiniProj01-Assign
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: nitraja
+    password: nitraja
+  jpa:
+    show-sql: true
+
+plan:
+  module:
+    messages:
+      save-success: Insurance Policy is saved with id value
+      save-failure: Insurance Policy is not saved with value
+      find-by-id-failure: Insurance Policy is not found
+      update-success: Insurance Policy is updated
+      update-failure: Insurance Policy is not updated
+      delete-success: Insurance Policy is deleted
+      delete-failure: Insurance Policy not deleted
+      status-change-success: Insurance Policy status is changed
+      status-change-failure: Insurance Policy is not found for status change
