@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Locale.Category;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.nt.config.AppConfigProperties;
+import com.nt.constants.InsurancePolicyConstantMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +43,7 @@ public class InsurancePolicyMgmtServiceImpl implements IInsurancePolicyMgmtServi
 		else 
 			return "Problem in saving the InsurancePolicy";  */
 		
-		return saved.getPolicyNumber() != null?messages.get("save-success") +" "+ saved.getPolicyNumber():messages.get("save-failure");
+		return saved.getPolicyNumber() != null?messages.get(InsurancePolicyConstantMessages.SAVE_SUCCESS) +" "+ saved.getPolicyNumber():messages.get(InsurancePolicyConstantMessages.SAVE_FAILURE);
 	}
 
 	@Override
@@ -58,7 +60,7 @@ public class InsurancePolicyMgmtServiceImpl implements IInsurancePolicyMgmtServi
 		   else
 			throw new IllegalArgumentException("Policy not found");  */
 		
-		return insurancePolicyRepo.findById(policyId).orElseThrow(() -> new IllegalArgumentException(messages.get("find-by-id-failure")));
+		return insurancePolicyRepo.findById(policyId).orElseThrow(() -> new IllegalArgumentException(messages.get(InsurancePolicyConstantMessages.FIND_BY_ID_FAILURE)));
 		
 	}
 
@@ -68,9 +70,9 @@ public class InsurancePolicyMgmtServiceImpl implements IInsurancePolicyMgmtServi
 		if (opt.isPresent()) {
 			//update the obj
 			insurancePolicyRepo.save(insurancePolicy);
-			return insurancePolicy.getPolicyNumber() +" "+ messages.get("update-success");
+			return insurancePolicy.getPolicyNumber() +" "+ messages.get(InsurancePolicyConstantMessages.UPDATE_SUCCESS);
 		}else {
-			return "Policy ID: " + insurancePolicy.getPolicyNumber() +" "+ messages.get("update-failure");
+			return "Policy ID: " + insurancePolicy.getPolicyNumber() +" "+ messages.get(InsurancePolicyConstantMessages.UPDATE_FAILURE);
 		}
 	}
 
@@ -80,9 +82,9 @@ public class InsurancePolicyMgmtServiceImpl implements IInsurancePolicyMgmtServi
 		if (opt.isPresent()) {
 			//update the obj
 			insurancePolicyRepo.deleteById(policyId);
-			return policyId +" "+ messages.get("delete-success");
+			return policyId +" "+ messages.get(InsurancePolicyConstantMessages.DELETE_SUCCESS);
 		}else {
-			return "Policy ID: " + policyId +" "+ messages.get("delete-failure");
+			return "Policy ID: " + policyId +" "+ messages.get(InsurancePolicyConstantMessages.DELETE_FAILURE);
 		}
 	}
 
@@ -90,11 +92,13 @@ public class InsurancePolicyMgmtServiceImpl implements IInsurancePolicyMgmtServi
 	public Map<Integer, String> getInsurancePolicyCategories() {
 		// get all policy categories
 		List<InsurancePolicyCategory> categories = insurancePolicyCategoryRepo.findAll();
-		Map<Integer, String> categoriesMap = new HashMap<Integer, String>();
+		/*Map<Integer, String> categoriesMap = new HashMap<Integer, String>();
 		categories.forEach(categoryInner -> {
 			categoriesMap.put(categoryInner.getCategoryId(), categoryInner.getPolicyType());
-		});
-		return categoriesMap;
+		});*/
+		Map<Integer, String> categoriesMapStream = categories.stream()
+				.collect(Collectors.toMap(InsurancePolicyCategory::getCategoryId, InsurancePolicyCategory::getPolicyType));
+		return categoriesMapStream;
 	}
 
 	
